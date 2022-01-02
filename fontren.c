@@ -73,6 +73,8 @@ Font load_font(FILE *f_file) {
 			for (k = 0; k < longest_line; k++)
 				token[k] = 0;
 			k = 0;
+			if (f[j + i] == ' ')
+				j ++;
 			while (f[j + i] != '\n') {
 				token[k] = f[j + i];
 				k ++;
@@ -156,7 +158,7 @@ Font load_font(FILE *f_file) {
 				} else if (f[j + i] == '\n') {
 					/* nothing */
 				} else {
-					fprintf(stderr, "err: fatal error in font. char %c not supposed to be in a definition of a letter\nexiting. may cause memory leaks.", f[j+i]);
+					fprintf(stderr, "err: fatal error in font. char %c (%d) not supposed to be in a definition of a letter\nexiting. may cause memory leaks.", f[j+i], CURR_LETTER);
 					exit(1);
 				}
 
@@ -188,11 +190,10 @@ int main (void) {
 	Font fnt = load_font(fopen("standard.frfont", "rb+"));
 
 	int i, j;
+	printf("strlen(fnt.defines) = %d\n", (int)strlen(fnt.defines));
 	for (j = 0; j < strlen(fnt.defines); j++) {
+		printf("%c\n", fnt.defines[j]);
 		for (i = 0; i < fnt.size * fnt.size; i++) {
-			if (((i + 1) % fnt.size) == 0) {
-				printf("\n");
-			}
 			switch (fnt.letter[j].pixel[i]) {
 				case 0:
 					printf(" ");
@@ -204,10 +205,16 @@ int main (void) {
 					printf("???? %d\n", fnt.letter[0].pixel[i]);
 					break;
 			}
+			if (((i + 1) % fnt.size) == 0) {
+				printf("\n");
+			}
 		}
+		printf("\n");
 	}
 
-	for (i = 0; i < fnt.size * fnt.size; i++) {
+	printf("after loops\n");
+
+	for (i = 0; i < strlen(fnt.defines) - 1; i++) {
 		free(fnt.letter[i].pixel);
 	}
 	free(fnt.defines);
