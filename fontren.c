@@ -217,6 +217,7 @@ void render_letter(int X, int Y, int Size, Font fnt, char lttr) {
 	
 }
 
+/*
 int main (void) {
 	gfx_open(300, 300, "fontren demo");
 
@@ -225,11 +226,11 @@ int main (void) {
 	Font fnt = load_font(fopen("standard.frfont", "rb+"));
 
 	while (1) {
-		render_letter(0, 0, 3, fnt, 'H');
-		render_letter(20, 0, 3, fnt, 'e');
-		render_letter(40, 0, 3, fnt, 'l');
-		render_letter(60, 0, 3, fnt, 'l');
-		render_letter(80, 0, 3, fnt, 'o');
+		render_letter(0, 0, 2, fnt, 'H');
+		render_letter(20, 0, 2, fnt, 'e');
+		render_letter(40, 0, 2, fnt, 'l');
+		render_letter(60, 0, 2, fnt, 'l');
+		render_letter(80, 0, 2, fnt, 'o');
 		gfx_flush();
 	}
 
@@ -242,4 +243,4 @@ int main (void) {
 	free(fnt.letter);
 	return 0;
 }
-
+*/
