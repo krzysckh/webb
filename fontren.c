@@ -94,7 +94,12 @@ Font load_font(FILE *f_file) {
 				j ++;
 			}
 
-			ret.size = atoi(token);
+			if ((ret.size = atoi(token)) < 8) {
+				fprintf(stderr, "err: error in font. got token SIZE with SIZE smaller than 8\n");
+				free(token);
+				free(f);
+				exit(1);
+			}
 		} else if (strcmp(token, "BLANK") == 0) {
 			for (k = 0; k < longest_line; k++)
 				token[k] = 0;
@@ -139,7 +144,7 @@ Font load_font(FILE *f_file) {
 				exit(1);
 			}
 
-			printf("DEF: used configuration: PIXEL = %c, BLANK = %c, SIZE = %d\n", PIXEL_C, BLANK_C, ret.size);
+			printf("Font: Defined letter %c\n", ret.defines[CURR_LETTER]);
 			while (f[j + i] != '\n')
 				j ++;
 			/* go to next line */
@@ -182,37 +187,53 @@ Font load_font(FILE *f_file) {
 	return ret;
 }
 
-int main (void) {
-	/*gfx_open(300, 300, "fontren demo");*/
+void draw_pixel(int X, int Y, int Size) {
+	int i;
+	for (i = X; i < X + Size; i++) {
+		gfx_line(i, Y, i, Y + Size);
+	}
+}
 
-	/*gfx_color(255, 255, 255);*/
+
+void render_letter(int X, int Y, int Size, Font fnt, char lttr) {
+	int i, xn = X, yn = Y, addr = 0;
+	for (i = 0; i < strlen(fnt.defines); i++) {
+		if (fnt.defines[i] != lttr) {
+			addr ++;
+		} else {
+			break;
+		}
+	}
+
+	for (i = 0; i < (fnt.size * fnt.size); i++) {
+		if (fnt.letter[addr].pixel[i])
+			draw_pixel(xn, yn, Size);
+		xn += Size;
+		if ((i % fnt.size == 0) && i != 0) {
+			yn += Size;
+			xn = X;
+		}
+	}
+	
+}
+
+int main (void) {
+	gfx_open(300, 300, "fontren demo");
+
+	gfx_color(255, 255, 255);
 
 	Font fnt = load_font(fopen("standard.frfont", "rb+"));
 
-	int i, j;
-	printf("strlen(fnt.defines) = %d\n", (int)strlen(fnt.defines));
-	for (j = 0; j < strlen(fnt.defines); j++) {
-		printf("%c\n", fnt.defines[j]);
-		for (i = 0; i < fnt.size * fnt.size; i++) {
-			switch (fnt.letter[j].pixel[i]) {
-				case 0:
-					printf(" ");
-					break;
-				case 1:
-					printf("#");
-					break;
-				default:
-					printf("???? %d\n", fnt.letter[0].pixel[i]);
-					break;
-			}
-			if (((i + 1) % fnt.size) == 0) {
-				printf("\n");
-			}
-		}
-		printf("\n");
+	while (1) {
+		render_letter(0, 0, 3, fnt, 'H');
+		render_letter(20, 0, 3, fnt, 'e');
+		render_letter(40, 0, 3, fnt, 'l');
+		render_letter(60, 0, 3, fnt, 'l');
+		render_letter(80, 0, 3, fnt, 'o');
+		gfx_flush();
 	}
 
-	printf("after loops\n");
+	int i;
 
 	for (i = 0; i < strlen(fnt.defines) - 1; i++) {
 		free(fnt.letter[i].pixel);
