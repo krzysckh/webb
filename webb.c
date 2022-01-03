@@ -11,12 +11,14 @@ int main (int argc, char *argv[]) {
 	int opt;
 	char *font_name = "fonts/standard.frfont";
 	char *web_download = "http://krzysckh.org/index.html";
-	while ((opt = getopt(argc, argv, "hf:X:Y:w:")) != -1) {
+	int fsize = 1;
+	int lspacing = 0;
+	while ((opt = getopt(argc, argv, "hf:X:Y:w:s:l:")) != -1) {
 		switch (opt) {
 			case 'h':
 				printf(
 						"webb - web browser (in the future)\n"
-						"webb [-h] [-f font.frfont] [-X xsize] [-Y ysize] [-w web adress]\n"
+						"webb [-h] [-f font.frfont] [-X xsize] [-Y ysize] [-s fontsize] [-l letter_spacing] [-w web adress]\n"
 					);
 				exit(0);
 				break;
@@ -28,6 +30,12 @@ int main (int argc, char *argv[]) {
 				break;
 			case 'Y':
 				ys = atoi(optarg);
+				break;
+			case 's':
+				fsize = atoi(optarg);
+				break;
+			case 'l':
+				lspacing = atoi(optarg);
 				break;
 			case 'w':
 				web_download = optarg;
@@ -59,8 +67,12 @@ int main (int argc, char *argv[]) {
 		i ++;
 	}
 
+	if (lspacing <= 0) {
+		lspacing = fnt.size + fnt.size/2;
+	}
+
 	while (1) {
-		render_text(inf, (int) sz-1, 10, 10, fnt, 1, xs, ys, 5, fnt.size/2, 1);
+		render_text(inf, (int) sz-1, 10, 10, fnt, fsize, xs, ys, 5, fnt.size/2, lspacing);
 		if (gfx_wait() == 'q') {
 			break;
 		}
