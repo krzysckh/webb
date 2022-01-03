@@ -1,4 +1,5 @@
 #include "fontren.h"
+#include "gfx.h"
 
 Font load_font(FILE *f_file) {
 	Font ret;
@@ -192,7 +193,7 @@ void render_letter(int X, int Y, int Size, Font fnt, char lttr) {
 		}
 	}
 
-	if (addr > strlen(fnt.defines)) {
+	if (fnt.defines[addr] != lttr) {
 		addr = 0;
 	}
 
@@ -208,47 +209,32 @@ void render_letter(int X, int Y, int Size, Font fnt, char lttr) {
 	
 }
 
-void render_text(char *text, int START_X, int START_Y, Font fnt, int Size, int max_width, int max_height, int word_spacing, int line_spacing) {
+void render_text(char *text, int length, int START_X, int START_Y, Font fnt, int Size, int max_width, int max_height, int word_spacing, int line_spacing, int letter_spacing) {
 	int i, x = START_X, y = START_Y;
 
-	for (i = 0; i < strlen(text); i++) {
+	for (i = 0; i < length; i++) {
+		if (x >= max_width) {
+			x = START_X;
+			y += fnt.size + line_spacing;
+		}
+
+		if (y >= max_height) {
+			return;
+		}
 		switch (text[i]) {
 			case '\n':
-				y += Size + line_spacing;
-				if (y >= max_height) {
-					return;
-				}
+				y += fnt.size + line_spacing;
+				x = START_X;
 				break;
 			case ' ':
-				x += word_spacing;
-				if (x >= max_width) {
-					x = START_X;
-					y += Size + line_spacing;
-					if (y >= max_height) {
-						return;
-					}
-				}
+				x += fnt.size + word_spacing;
 				break;
 			case '\t':
-				x += word_spacing*2;
-				if (x >= max_width) {
-					x = START_X;
-					y += Size + line_spacing;
-					if (y >= max_height) {
-						return;
-					}
-				}
+				x += fnt.size + word_spacing;
 				break;
 			default:
 				render_letter(x, y, Size, fnt, text[i]);
-				x += Size;
-				if (x >= max_width) {
-					x = START_X;
-					y += Size + line_spacing;
-					if (y >= max_height) {
-						return;
-					}
-				}
+				x += fnt.size + letter_spacing;
 				break;
 		}
 	}

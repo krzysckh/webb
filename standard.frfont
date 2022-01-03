@@ -1,5 +1,5 @@
 FORMAT FRFONT
-DEFINES !"#$%&'()*+,-.\0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~
+DEFINES !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~
 SIZE 8
 BLANK -
 PIXEL +
@@ -750,6 +750,15 @@ DEF
 ---+++--
 ------+-
 ---+++--
+DEF
+--------
+--------
+---+----
+--+++---
+---+----
+---+----
+---+-+--
+----+---
 DEF
 --------
 --------

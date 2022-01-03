@@ -1,4 +1,4 @@
-#include <curl/curl.h>
+#include "download.h"
 
 void download(const char* url, const char* fname) {
 	CURL* easyhandle = curl_easy_init();
