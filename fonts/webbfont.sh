@@ -22,7 +22,7 @@ EOF
 for a in $(echo $ASCII | tr ' ' '\n')
 do
 	echo "DEF $a"
-	convert -background white -fill black -font CozetteVector -pointsize 72 label:"$a" /tmp/webbfont/tmp.jpg
+	convert -background white -fill black -font "$1" -pointsize 72 label:"$a" /tmp/webbfont/tmp.jpg
 	img2txt -W 8 -H 8 -g 1000 /tmp/webbfont/tmp.jpg | ansifilter | \
 		tr '[:graph:]' '+' | \
 		tr ' ' '-'
