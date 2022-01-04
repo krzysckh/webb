@@ -1,11 +1,6 @@
 #include "webb.h"
 
 int main (int argc, char *argv[]) {
-	gfx_open(1000, 1000, "webb");
-	gfx_clear_color(34, 34, 34);
-	gfx_color(222,222,222);
-	gfx_flush();
-
 	int xs = 1000, ys = 1000;
 
 	int opt;
@@ -45,6 +40,12 @@ int main (int argc, char *argv[]) {
 				break;
 		}
 	}
+
+	gfx_open(xs, ys, "webb");
+	gfx_clear_color(34, 34, 34);
+	gfx_color(222,222,222);
+	gfx_flush();
+
 	FILE *fnt_f = fopen(font_name, "rb+");
 	if (fnt_f == NULL) {
 		printf("cannot open font %s\n", font_name);
@@ -65,10 +66,6 @@ int main (int argc, char *argv[]) {
 	while ((c = fgetc(fp)) != EOF) {
 		inf[i] = c;
 		i ++;
-	}
-
-	if (lspacing <= 0) {
-		lspacing = fnt.size + fnt.size/2;
 	}
 
 	while (1) {

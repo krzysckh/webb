@@ -1,11 +1,12 @@
 #!/bin/sh
 
 usage() {
-	echo "usage: $0 Fontname > file.frfont"
+	echo "usage: $0 Fontname [size] > file.frfont"
 	exit 1
 }
 
 [ -z "$1" ] && usage
+[ -z "$2" ] && size="8" || size="$2"
 
 mkdir -p /tmp/webbfont/
 
@@ -14,7 +15,7 @@ ASCII="! \" # $ % & \' ( ) \* + , - . / 0 1 2 3 4 5 6 7 8 9 : ; < = > ? @ A B C 
 cat<< EOF
 FORMAT FRFONT
 DEFINES !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_\`abcdefghijklmnopqrstuvwxyz{|}~
-SIZE 8
+SIZE $size
 BLANK -
 PIXEL +
 EOF
@@ -23,7 +24,7 @@ for a in $(echo $ASCII | tr ' ' '\n')
 do
 	echo "DEF $a"
 	convert -background white -fill black -font "$1" -pointsize 72 label:"$a" /tmp/webbfont/tmp.jpg
-	img2txt -W 8 -H 8 -g 1000 /tmp/webbfont/tmp.jpg | ansifilter | \
+	img2txt -W $size -H $size -g 1000 /tmp/webbfont/tmp.jpg | ansifilter | \
 		tr '[:graph:]' '+' | \
 		tr ' ' '-'
 done

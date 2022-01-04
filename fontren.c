@@ -223,18 +223,18 @@ void render_text(char *text, int length, int START_X, int START_Y, Font fnt, int
 		}
 		switch (text[i]) {
 			case '\n':
-				y += fnt.size + line_spacing;
+				y += fnt.size * Size + line_spacing;
 				x = START_X;
 				break;
 			case ' ':
-				x += fnt.size + word_spacing;
+				x += fnt.size * Size + word_spacing;
 				break;
 			case '\t':
 				x += fnt.size + word_spacing;
 				break;
 			default:
 				render_letter(x, y, Size, fnt, text[i]);
-				x += fnt.size + letter_spacing;
+				x += fnt.size * Size + letter_spacing;
 				break;
 		}
 	}
