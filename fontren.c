@@ -194,6 +194,7 @@ void render_letter(int X, int Y, int Size, Font fnt, char lttr) {
 	}
 
 	if (fnt.defines[addr] != lttr) {
+		printf("render_letter(): font does not support '%c', defaulting to fnt.defines[0] (= %c)\n", lttr, fnt.defines[0]);
 		addr = 0;
 	}
 
@@ -215,7 +216,7 @@ void render_text(char *text, int length, int START_X, int START_Y, Font fnt, int
 	for (i = 0; i < length; i++) {
 		if (x >= max_width) {
 			x = START_X;
-			y += fnt.size + line_spacing;
+			y += fnt.size * Size + line_spacing;
 		}
 
 		if (y >= max_height) {

@@ -1,4 +1,5 @@
 #include "webb.h"
+#include "gfx.h"
 
 int main (int argc, char *argv[]) {
 	int xs = 1000, ys = 1000;
@@ -68,11 +69,27 @@ int main (int argc, char *argv[]) {
 		i ++;
 	}
 
-	while (1) {
-		render_text(inf, (int) sz-1, 10, 10, fnt, fsize, xs, ys, 5, fnt.size/2, lspacing);
-		if (gfx_wait() == 'q') {
-			break;
+	int run = 1;
+	render_text(inf, (int) sz-1, 10, 10, fnt, fsize, xs, ys, 5, fnt.size/2, lspacing);
+	while (run) {
+		switch (c = gfx_wait()) {
+			case 'q':
+				run = 0;
+				break;
+			case ']':
+				fsize ++;
+				gfx_clear();
+				break;
+			case '[':
+				fsize --;
+				gfx_clear();
+				break;
+			default:
+				printf("%c (%d)\n", c, c);
+				break;
 		}
+		render_text(inf, (int) sz-1, 10, 10, fnt, fsize, xs, ys, 5, fnt.size/2, lspacing);
+		gfx_flush();
 	}
 
 	fclose(fp);
