@@ -1,5 +1,4 @@
 #include "webb.h"
-#include "gfx.h"
 
 int main (int argc, char *argv[]) {
 	int xs = 1000, ys = 1000;
@@ -55,23 +54,25 @@ int main (int argc, char *argv[]) {
 
 	Font fnt = load_font(fnt_f);
 
+
 	download(web_download, ".tmpf");
-	
+
 	FILE *fp = fopen(".tmpf", "rb+");
 	fseek(fp, 0L, SEEK_END);
-	size_t sz = ftell(fp);
+	int sz = ftell(fp);
 	fseek(fp, 0L, SEEK_SET);
+	int i = 0, c;
 
-	int c, i = 0;
-	char *inf = malloc(sizeof(char) * (int)sz);
+	char *in = malloc(sizeof(char) * sz);
 	while ((c = fgetc(fp)) != EOF) {
-		inf[i] = c;
+		in[i] = c;
 		i ++;
 	}
 
 	int run = 1;
-	render_text(inf, (int) sz-1, 10, 10, fnt, fsize, xs, ys, 5, fnt.size/2, lspacing);
 	while (run) {
+		render_site(in, sz, fnt, xs, ys, fsize);
+
 		switch (c = gfx_wait()) {
 			case 'q':
 				run = 0;
@@ -88,12 +89,54 @@ int main (int argc, char *argv[]) {
 				printf("%c (%d)\n", c, c);
 				break;
 		}
+		gfx_flush();
+	}
+
+	/*
+	download(web_download, ".tmpf");
+	
+	FILE *fp = fopen(".tmpf", "rb+");
+	fseek(fp, 0L, SEEK_END);
+	size_t sz = ftell(fp);
+	fseek(fp, 0L, SEEK_SET);
+
+	int c, i = 0;
+	char *inf = malloc(sizeof(char) * (int)sz);
+	while ((c = fgetc(fp)) != EOF) {
+		inf[i] = c;
+		i ++;
+	}
+
+	int run = 1;
+	while (run) {
 		render_text(inf, (int) sz-1, 10, 10, fnt, fsize, xs, ys, 5, fnt.size/2, lspacing);
+		inputbar(0, 0, 100, 100, "gaming");
+
+		switch (c = gfx_wait()) {
+			case 'q':
+				run = 0;
+				break;
+			case ']':
+				fsize ++;
+				gfx_clear();
+				break;
+			case '[':
+				fsize --;
+				gfx_clear();
+				break;
+			default:
+				printf("%c (%d)\n", c, c);
+				break;
+		}
 		gfx_flush();
 	}
 
 	fclose(fp);
 	free(inf);
+	*/
+
+	free(fp);
+	free(in);
 	fclose(fnt_f);
 	return 0;
 }
