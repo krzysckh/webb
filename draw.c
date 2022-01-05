@@ -6,7 +6,7 @@ void render_site(char *site, int size, Font fnt, int max_X, int max_Y, int base_
 	while (i < size) {
 		if (X > max_X) {
 			printf("no more X space\n");
-			Y += fnt.size + 2;
+			Y += fnt.size * base_fontsize + 2;
 			X = 0;
 		}
 		if (Y > max_Y) {
