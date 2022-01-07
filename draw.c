@@ -60,6 +60,9 @@ void render_site(char *site, int size, Font fnt, int max_X, int max_Y, int base_
 			case ' ':
 				X += fnt.size * base_fontsize + 1;
 				break;
+			case '\t':
+				X += 2 * (fnt.size * base_fontsize + 1);
+				break;
 			default:
 				render_letter(X, Y, base_fontsize, fnt, site[i]);
 				X += fnt.size * base_fontsize + 1;
