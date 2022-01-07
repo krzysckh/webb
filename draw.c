@@ -1,6 +1,16 @@
 #include "draw.h"
 #include "gfx.h"
+/*#include "config.h"*/
 #include <string.h>
+
+int hover_over_link(Link *links, int link_no) {
+	if ((gfx_xpos() > links[link_no].X) && (gfx_xpos() < links[link_no].X_end)) {
+		if ((gfx_ypos() > links[link_no].Y) && (gfx_ypos() < links[link_no].Y_end)) {
+			return 1;
+		}
+	}
+	return 0;
+}
 
 void render_site(char *site, int size, Font fnt, int max_X, int max_Y, int base_fontsize) {
 	int X = 0, Y = 0, i = 0, j, k;
@@ -40,7 +50,6 @@ void render_site(char *site, int size, Font fnt, int max_X, int max_Y, int base_
 						render_letter(X, Y, base_fontsize, fnt, site[i]);
 						X += fnt.size * base_fontsize + 1;
 						break;
-
 				}
 				break;
 			case '*':
@@ -141,6 +150,9 @@ void render_site(char *site, int size, Font fnt, int max_X, int max_Y, int base_
 				links[current_link].X = X;
 				links[current_link].Y = Y;
 
+				links[current_link].X_end = X + (strlen(links[current_link].content) * fnt.size * base_fontsize);
+				links[current_link].Y_end = Y + 1 * (fnt.size * base_fontsize);
+
 				X += strlen(links[current_link].content) * (fnt.size * base_fontsize + 1);
 				current_link ++;
 				break;
@@ -152,23 +164,67 @@ void render_site(char *site, int size, Font fnt, int max_X, int max_Y, int base_
 		i ++;
 	}
 
+	/*gfx_color(LINK_FG_COLOR[0], LINK_FG_COLOR[1], LINK_FG_COLOR[2]);*/
+	gfx_color(0, 150, 255);
+
 	for (i = 0; i < current_link; i++) {
-		gfx_color(0, 100, 255);
-		for (j = 0; j < strlen(links[i].content); j++) {
-			render_letter(links[i].X + (j * fnt.size * base_fontsize), links[i].Y, base_fontsize, fnt, links[i].content[j]);
-		}
+		/*gfx_line(links[i].X, links[i].Y, links[i].X_end, links[i].Y);*/
+		/*gfx_line(links[i].X, links[i].Y, links[i].X, links[i].Y_end);*/
+
+		/*gfx_line(links[i].X, links[i].Y_end, links[i].X_end, links[i].Y_end);*/
+		/*gfx_line(links[i].X_end, links[i].Y, links[i].X_end, links[i].Y_end);*/
+
+		/*for (j = 0; j < strlen(links[i].content); j++) {*/
+			/*render_letter(links[i].X + (j * fnt.size * base_fontsize), links[i].Y, base_fontsize, fnt, links[i].content[j]);*/
+		/*}*/
+		render_text(
+				links[i].content,
+				strlen(links[i].content),
+				links[i].X,
+				links[i].Y,
+				fnt,
+				base_fontsize,
+				links[i].X_end,
+				links[i].Y_end,
+				0,
+				0,
+				0
+			);
 	}
 
 	while (1) {
 		if ((j = gfx_wait()) == 1) {
-			/*if (hover_over_link(links))*/
+			for (i = 0; i < current_link; i++) {
+				if (hover_over_link(links, i)) {
+					download(links[i].href, ".tmpf");
+
+					for (j = 0; j < current_link; j++) {
+						free(links[j].content);
+						free(links[j].href);
+					}
+					free(links);
+
+					return;
+				}
+			}
+		}
+
+		switch(j) {
+			case 'r':
+				return;
+				break;
+			case 'q':
+				exit(0);
+				break;
 		}
 	}
+
 
 	for (i = 0; i < current_link; i++) {
 		free(links[i].content);
 		free(links[i].href);
 	}
+	free(links);
 }
 
 

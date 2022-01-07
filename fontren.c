@@ -132,7 +132,7 @@ Font load_font(FILE *f_file) {
 				exit(1);
 			}
 
-			printf("Font: Defined letter %c\n", ret.defines[CURR_LETTER]);
+			/*printf("Font: Defined letter %c\n", ret.defines[CURR_LETTER]);*/
 			while (f[j + i] != '\n')
 				j ++;
 			/* go to next line */
@@ -168,6 +168,8 @@ Font load_font(FILE *f_file) {
 		j ++;
 		i += j;
 	}
+
+	printf("Font: Defined letters %s\n", ret.defines);
 
 	free(token);
 	free(f);

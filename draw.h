@@ -5,6 +5,8 @@
 typedef struct {
 	int X;
 	int Y;
+	int X_end;
+	int Y_end;
 	char *href;
 	char *content;
 } Link;
