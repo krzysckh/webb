@@ -6,5 +6,4 @@ all: fontren.o gfx.o download.o webb.o draw.o
 %.o: %.c
 	$(CC) -c -o $@ $< $(CFLAGS) $(LDFLAGS)
 clean:
-	rm *.o
-	rm webb
+	rm -f webb *.o
