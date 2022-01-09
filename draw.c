@@ -1,5 +1,15 @@
 #include "draw.h"
 
+int getOmmit(int a, int b) {
+	int i = 1;
+	while (1) {
+		if ((a / i) < b) {
+			return i;
+		}
+		i ++;
+	}
+}
+
 int hover_over_link(Link *links, int link_no) {
 	if ((gfx_xpos() > links[link_no].X) && (gfx_xpos() < links[link_no].X_end)) {
 		if ((gfx_ypos() > links[link_no].Y) && (gfx_ypos() < links[link_no].Y_end)) {
@@ -78,9 +88,18 @@ void render_site(char *site, int size, Font fnt, int max_X, int max_Y, int base_
 				FILE *img_f = download_to_tmpf(img_link_buff);
 				rewind(img_f);
 				Image img_buff = load_ppm_image(img_f);
-				render_image(img_buff, X, Y);
 
-				Y += img_buff.height;
+				if (img_buff.height > max_Y - Y) {
+					render_image_smaller(img_buff, X, Y, getOmmit(img_buff.height, max_Y));
+					Y += img_buff.height / getOmmit(img_buff.height, max_Y);
+				} else if (img_buff.width > max_X - X) {
+					render_image_smaller(img_buff, X, Y, getOmmit(img_buff.width, max_X));
+					Y += img_buff.height / getOmmit(img_buff.width, max_X);
+				} else {
+					render_image(img_buff, X, Y);
+					Y += img_buff.height;
+				}
+
 				X = 0;
 
 				fclose(img_f);

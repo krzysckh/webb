@@ -19,4 +19,5 @@ typedef struct {
 } Image;
 
 void render_image(Image img, int X, int Y);
+void render_image_smaller(Image img, int X, int Y, int ommitPix);
 Image load_ppm_image (FILE *img_f);

@@ -17,6 +17,23 @@ void render_image(Image img, int X, int Y) {
 	}
 }
 
+void render_image_smaller(Image img, int X, int Y, int ommitPix) {
+	printf("rendering smaller ommit = %d\n", ommitPix);
+	int startX = X;
+	int i;
+	for (i = 0; i < (img.width * img.height); i+=ommitPix) {
+		if ((i + 1) % img.width/ommitPix == 0) {
+			Y ++;
+			X = startX;
+			i += (ommitPix-1) * (img.width);
+		}
+		gfx_color(img.pixel[i].r, img.pixel[i].g, img.pixel[i].b);
+		gfx_point(X, Y);
+		/*printf("%d. drew (%d %d %d) at %d %d\n", i, img.pixel[i].r, img.pixel[i].g, img.pixel[i].b, X, Y);*/
+		X ++;
+	}
+}
+
 Image load_ppm_image (FILE *img_f) {
 	Image ret;
 	ret.width = 0;
