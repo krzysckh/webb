@@ -38,7 +38,7 @@ Image load_ppm_image (FILE *img_f) {
 
 	if (strcmp(header, "P6") != 0) {
 		printf("load_ppm_image(): err: not a ppm image (%s != P6)\n", header);
-		return ret;
+		return load_ppm_image(fopen("res/not_ppm.ppm", "rb+"));
 		/* TODO: create an image that will show when an image is invalid and return it */
 	}
 
@@ -62,7 +62,7 @@ Image load_ppm_image (FILE *img_f) {
 					}
 					if (i > 15) {
 						printf("load_ppm_image(): err: header too long for buffer (%s)\n", img_sz_buff);
-						return ret;
+						return load_ppm_image(fopen("res/not_ppm.ppm", "rb+"));
 					}
 
 					img_sz_buff[i] = b;
@@ -83,7 +83,7 @@ Image load_ppm_image (FILE *img_f) {
 
 	if (Maxval > 255) {
 		printf("load_ppm_image(): err: now supporting just up to 255 Maxval in ppm images (maxval set to %d)\n", Maxval);
-		return ret;
+		return load_ppm_image(fopen("res/not_ppm.ppm", "rb+"));
 	}
 
 	ret.pixel = malloc(sizeof(ImagePixel) * (ret.height * ret.width));

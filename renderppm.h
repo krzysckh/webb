@@ -18,5 +18,5 @@ typedef struct {
 	ImagePixel *pixel;
 } Image;
 
-void render_image(Image img, int x, int y);
+void render_image(Image img, int X, int Y);
 Image load_ppm_image (FILE *img_f);

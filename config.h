@@ -3,10 +3,20 @@
 #ifndef CONFIG
 #define CONFIG
 
-int FG_COLOR[] = {222, 222, 222};
-int BG_COLOR[] = {34, 34, 34};
+#define FG_COLOR_r 222
+#define FG_COLOR_g 222
+#define FG_COLOR_b 222
 
-int LINK_BG_COLOR[] = {222, 222, 222};
-int LINK_FG_COLOR[] = {0, 150, 255};
+#define BG_COLOR_r 34
+#define BG_COLOR_g 34
+#define BG_COLOR_b 34
+
+#define LINK_BG_COLOR_r 222
+#define LINK_BG_COLOR_g 222
+#define LINK_BG_COLOR_b 222
+
+#define LINK_FG_COLOR_r 0
+#define LINK_FG_COLOR_g 150
+#define LINK_FG_COLOR_b 255
 
 #endif

@@ -1,6 +1,4 @@
 #include "webb.h"
-#include "gfx.h"
-#include <stdio.h>
 
 int main (int argc, char *argv[]) {
 	int xs = 1000, ys = 1000;
@@ -52,7 +50,7 @@ int main (int argc, char *argv[]) {
 	int i = 0, c;
 
 	if (web_download == NULL) {
-		FILE *welcome = fopen("sites/welcome.uu", "r");
+		FILE *welcome = fopen("res/welcome.uu", "r");
 		FILE *tmpf = fopen(".tmpf", "w");
 	
 		while ((c = fgetc(welcome)) != EOF) {
@@ -77,6 +75,7 @@ int main (int argc, char *argv[]) {
 
 	int run = 1;
 
+	/* 
 	FILE *imgf = fopen("glider.ppm", "rb+");
 	Image img = load_ppm_image(imgf);
 	render_image(img, 0, 0);
@@ -87,13 +86,9 @@ int main (int argc, char *argv[]) {
 
 	fclose(imgf);
 	free(img.pixel);
+	*/
 
-	/*
 	while (run) {
-		gfx_clear_color(BG_COLOR[0], BG_COLOR[1], BG_COLOR[2]);
-		gfx_color(FG_COLOR[0], FG_COLOR[1], FG_COLOR[2]);
-		gfx_clear();
-
 		fclose(fp);
 		render_site(in, sz, fnt, xs, ys, fsize);
 		in = NULL;
@@ -111,7 +106,6 @@ int main (int argc, char *argv[]) {
 			i ++;
 		}
 	}
-	*/
 
 	free(fp);
 	free(in);

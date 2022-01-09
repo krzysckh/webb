@@ -1,6 +1,8 @@
 #include "fontren.h"
 #include "gfx.h"
 #include "download.h"
+#include "renderppm.h"
+#include "config.h"
 
 typedef struct {
 	int X;

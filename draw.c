@@ -1,7 +1,4 @@
 #include "draw.h"
-#include "gfx.h"
-/*#include "config.h"*/
-#include <string.h>
 
 int hover_over_link(Link *links, int link_no) {
 	if ((gfx_xpos() > links[link_no].X) && (gfx_xpos() < links[link_no].X_end)) {
@@ -13,9 +10,14 @@ int hover_over_link(Link *links, int link_no) {
 }
 
 void render_site(char *site, int size, Font fnt, int max_X, int max_Y, int base_fontsize) {
+	gfx_clear_color(BG_COLOR_r, BG_COLOR_g, BG_COLOR_b);
+	gfx_color(FG_COLOR_r, FG_COLOR_g, FG_COLOR_b);
+	gfx_clear();
+
 	int X = 0, Y = 0, i = 0, j, k;
 	int bold = 0, italic = 0, crossed = 0, header = 0;
 	int linkAlloc = 0, current_link = 0, link_buff_alloc_count;
+	char *img_link_buff;
 
 	while (i < size) {
 		if (site[i] == '&')
@@ -51,6 +53,40 @@ void render_site(char *site, int size, Font fnt, int max_X, int max_Y, int base_
 						X += fnt.size * base_fontsize + 1;
 						break;
 				}
+				break;
+			case '{':
+				j = i;
+				while (site[j] != '}')
+					j ++;
+
+				j -= i;
+
+				img_link_buff = malloc(sizeof(char) * j);
+
+				for (k = 0; k < j; k++) {
+					img_link_buff[k] = '\0';
+				}
+
+				j = 0;
+				i ++; /* hop to char after '{' */
+				while (site[i] != '}') {
+					img_link_buff[j] = site[i];
+					i ++;
+					j ++;
+				}
+
+				FILE *img_f = tmpfile();
+				download_to_f(img_link_buff, img_f);
+				Image img_buff = load_ppm_image(img_f);
+				render_image(img_buff, X, Y);
+				Y += img_buff.height;
+				X = 0;
+
+				fclose(img_f);
+				free(img_buff.pixel);
+				free(img_link_buff);
+
+				gfx_color(FG_COLOR_r, FG_COLOR_g, FG_COLOR_b);
 				break;
 			case '*':
 				if (bold) {
@@ -164,8 +200,7 @@ void render_site(char *site, int size, Font fnt, int max_X, int max_Y, int base_
 		i ++;
 	}
 
-	/*gfx_color(LINK_FG_COLOR[0], LINK_FG_COLOR[1], LINK_FG_COLOR[2]);*/
-	gfx_color(0, 150, 255);
+	gfx_color(LINK_FG_COLOR_r, LINK_FG_COLOR_g, LINK_FG_COLOR_b);
 
 	for (i = 0; i < current_link; i++) {
 		/*gfx_line(links[i].X, links[i].Y, links[i].X_end, links[i].Y);*/
