@@ -75,10 +75,11 @@ void render_site(char *site, int size, Font fnt, int max_X, int max_Y, int base_
 					j ++;
 				}
 
-				FILE *img_f = tmpfile();
-				download_to_f(img_link_buff, img_f);
+				FILE *img_f = download_to_tmpf(img_link_buff);
+				rewind(img_f);
 				Image img_buff = load_ppm_image(img_f);
 				render_image(img_buff, X, Y);
+
 				Y += img_buff.height;
 				X = 0;
 
