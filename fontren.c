@@ -46,7 +46,7 @@ Font load_font(FILE *f_file) {
 	ret.size = -1;
 	i = (int) strlen("FORMAT FRFONT") + 1;
 
-	while (i < f_file_sz) {
+	while (i < (int)f_file_sz) {
 		for (j = 0; j < longest_line; j++) {
 			token[j] = '\0';
 		}
@@ -187,7 +187,7 @@ void draw_pixel(int X, int Y, int Size) {
 
 void render_letter(int X, int Y, int Size, Font fnt, char lttr) {
 	int i, xn = X, yn = Y, addr = 0;
-	for (i = 0; i < strlen(fnt.defines); i++) {
+	for (i = 0; i < (int)strlen(fnt.defines); i++) {
 		if (fnt.defines[i] != lttr) {
 			addr ++;
 		} else {
