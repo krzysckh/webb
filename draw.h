@@ -1,4 +1,5 @@
-#include "fontren.h"
+#include "ui.h"
+/*#include "fontren.h"*/ /*included in ui.h */
 #include "gfx.h"
 #include "download.h"
 #include "renderppm.h"

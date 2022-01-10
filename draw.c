@@ -1,4 +1,5 @@
 #include "draw.h"
+#include "gfx.h"
 
 int getOmmit(int a, int b) {
 	int i = 1;
@@ -23,6 +24,9 @@ void render_site(char *site, int size, Font fnt, int max_X, int max_Y, int base_
 	gfx_clear_color(BG_COLOR_r, BG_COLOR_g, BG_COLOR_b);
 	gfx_color(FG_COLOR_r, FG_COLOR_g, FG_COLOR_b);
 	gfx_clear();
+
+
+	char *click_menu_opt[] = {"Exit webb", "Reload Page"};
 
 	int X = 0, Y = 0, i = 0, j, k;
 	int bold = 0, italic = 0, crossed = 0, header = 0;
@@ -265,6 +269,19 @@ void render_site(char *site, int size, Font fnt, int max_X, int max_Y, int base_
 		}
 
 		switch(j) {
+			case 3: ;
+				switch (click_menu(gfx_xpos(), gfx_ypos(), click_menu_opt, 2, fnt, 2, base_fontsize + 1)) {
+					case -1:
+						return;
+						break;
+					case 0:
+						exit(0);
+						break;
+					case 1:
+						return;
+						break;
+				}
+				break;
 			case 'r':
 				return;
 				break;
