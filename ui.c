@@ -1,7 +1,6 @@
 #include "ui.h"
 
 int is_in_clbox(click_box bx) {
-	int i;
 	if (
 			gfx_xpos() < bx.X2 && \
 			gfx_xpos() > bx.X1 && \
@@ -21,7 +20,7 @@ int click_menu(int X, int Y, char *options[], int optn, Font fnt, int padding, i
 	click_box *optboxes = malloc(sizeof(click_box) * optn);
 
 	for (i = 0; i < optn; i++) {
-		maxw = (strlen(options[i]) > maxw) ? strlen(options[i]) : maxw;
+		maxw = ((int)strlen(options[i]) > maxw) ? (int)strlen(options[i]) : maxw;
 		/* calculates the longest opt */
 	}
 

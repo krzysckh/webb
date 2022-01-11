@@ -272,12 +272,14 @@ void render_site(char *site, int size, Font fnt, int max_X, int max_Y, int base_
 			case 3: ;
 				switch (click_menu(gfx_xpos(), gfx_ypos(), click_menu_opt, 2, fnt, 2, base_fontsize + 1)) {
 					case -1:
+						gfx_clear();
 						return;
 						break;
 					case 0:
 						exit(0);
 						break;
 					case 1:
+						gfx_clear();
 						return;
 						break;
 				}
