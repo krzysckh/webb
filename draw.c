@@ -217,7 +217,12 @@ void render_site(char *site, int size, Font fnt, int max_X, int max_Y, int base_
 				current_link ++;
 				break;
 			default:
-				render_letter(X, Y, base_fontsize, fnt, site[i]);
+				if (bold) {
+					render_letter(X, Y, base_fontsize, fnt, site[i]);
+					render_letter(X+1, Y, base_fontsize, fnt, site[i]);
+				} else {
+					render_letter(X, Y, base_fontsize, fnt, site[i]);
+				}
 				X += fnt.size * base_fontsize + 1;
 				break;
 		}
@@ -283,8 +288,8 @@ void render_site(char *site, int size, Font fnt, int max_X, int max_Y, int base_
 						return;
 						break;
 					case 2: ;
-						char *tmp = malloc((strlen("http://") + 1024) * sizeof(char));
-						sprintf(tmp, "http://%s", searchbar(0, 0, (100 * fnt.size * base_fontsize), fnt, 5, "link ...", 1024));
+						char *tmp = malloc((strlen(PROTOCOL) + 1024) * sizeof(char));
+						sprintf(tmp, "%s%s", PROTOCOL, searchbar(0, 0, (100 * fnt.size * base_fontsize), fnt, 5, "link ...", 1024));
 						download(tmp, ".tmpf");
 						free(tmp);
 						return;

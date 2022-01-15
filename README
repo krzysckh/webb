@@ -1,0 +1,27 @@
+webb
+====
+
+webb is an online upup document browser
+
+it's absolutely unfinished and really, really bad
+
+it supports most of upup syntax
+it can draw .ppm images
+it supports http / https (specify in config.h)
+
+deps
+====
+
+libcurl and libx11
+
+usage
+=====
+
+	git clone https://github.com/krzysckh/webb
+	cd webb
+	make -j$(nproc)
+	./webb -h
+
+
+[ krzysckh 2022 ]
+
