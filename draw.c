@@ -26,7 +26,7 @@ void render_site(char *site, int size, Font fnt, int max_X, int max_Y, int base_
 	gfx_clear();
 
 
-	char *click_menu_opt[] = {"Exit webb", "Reload Page"};
+	char *click_menu_opt[] = {"Exit webb", "Reload Page", "Load Website"};
 
 	int X = 0, Y = 0, i = 0, j, k;
 	int bold = 0, italic = 0, crossed = 0, header = 0;
@@ -270,7 +270,7 @@ void render_site(char *site, int size, Font fnt, int max_X, int max_Y, int base_
 
 		switch(j) {
 			case 3: ;
-				switch (click_menu(gfx_xpos(), gfx_ypos(), click_menu_opt, 2, fnt, 2, base_fontsize + 1)) {
+				switch (click_menu(gfx_xpos(), gfx_ypos(), click_menu_opt, 3, fnt, 2, base_fontsize + 1)) {
 					case -1:
 						gfx_clear();
 						return;
@@ -280,6 +280,13 @@ void render_site(char *site, int size, Font fnt, int max_X, int max_Y, int base_
 						break;
 					case 1:
 						gfx_clear();
+						return;
+						break;
+					case 2: ;
+						char *tmp = malloc((strlen("http://") + 1024) * sizeof(char));
+						sprintf(tmp, "http://%s", searchbar(0, 0, (100 * fnt.size * base_fontsize), fnt, 5, "link ...", 1024));
+						download(tmp, ".tmpf");
+						free(tmp);
 						return;
 						break;
 				}

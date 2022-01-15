@@ -13,6 +13,14 @@ int is_in_clbox(click_box bx) {
 	}
 }
 
+void draw_rect(int x1, int y1, int x2, int y2) {
+	int i;
+	
+	for (i = y1; i < y2; i++) {
+		gfx_line(x1, i, x2, i);
+	}
+}
+
 int click_menu(int X, int Y, char *options[], int optn, Font fnt, int padding, int fsize) {
 	int ret = -1, xn = X, yn = Y, i;
 	int maxw = 0;
@@ -68,5 +76,44 @@ int click_menu(int X, int Y, char *options[], int optn, Font fnt, int padding, i
 	}
 
 	free(optboxes);
+	return ret;
+}
+
+char *searchbar(int X, int Y, int width, Font fnt, int padding, char *prompt, int MAX_LEN) {
+	char *ret = malloc(sizeof(char) * MAX_LEN);
+	int c, i;
+
+	for (i = 0; i < MAX_LEN; i++) {
+		ret[i] = '\0';
+	}
+
+	i = 0;
+
+	gfx_color(230, 230, 230);
+	draw_rect(X, Y, X + width + (padding * 2), Y + (padding * 2) + fnt.size);
+
+	while ((c = gfx_wait()) != 13) {
+		if (c == 8 && i != 0) {
+			i -= 1;
+			ret[i] = '\0';
+			gfx_color(230, 230, 230);
+			draw_rect(X, Y, X + width + (padding * 2), Y + (padding * 2) + fnt.size);
+			gfx_color(22,22,22);
+			render_text(ret, strlen(ret), X + padding, Y + padding, fnt, 1, width + X + (padding * 2), Y + (padding * 2) + (fnt.size * 1), 0, 0, 0);
+			continue;
+		}
+		gfx_color(230, 230, 230);
+		draw_rect(X, Y, X + width + (padding * 2), Y + (padding * 2) + fnt.size);
+
+		ret[i] = c;
+
+		gfx_color(22,22,22);
+		render_text(ret, strlen(ret), X + padding, Y + padding, fnt, 1, width + X + (padding * 2), Y + (padding * 2) + (fnt.size * 1), 0, 0, 0);
+		printf("ret = %s\n", ret);
+		printf("c = %c (%d) \n", c, c);
+
+		i ++;
+	}
+
 	return ret;
 }
