@@ -1,6 +1,16 @@
 #include "renderppm.h"
+#include <stdio.h>
 
 /* renderppm.c only supports up to 256b PPM files */
+
+int _imagemagick_convert_img_to_ppm(char *fname) {
+	int ret;
+	if (fork() == 0) {
+		ret = execl("/usr/bin/convert", "convert", fname, "/tmp/_im_webb_ppm.ppm", (char*) NULL);
+		printf("really tryuing ret = %d\n", ret);
+	}
+	return ret;
+}
 
 void render_image(Image img, int X, int Y) {
 	int startX = X;
@@ -54,9 +64,19 @@ Image load_ppm_image (FILE *img_f) {
 	char img_sz_buff[15];
 
 	if (strcmp(header, "P6") != 0) {
-		printf("load_ppm_image(): err: not a ppm image (%s != P6)\n", header);
-		return load_ppm_image(fopen("res/not_ppm.ppm", "rb+"));
-		/* TODO: create an image that will show when an image is invalid and return it */
+		printf("load_ppm_image(): err: not a ppm image (%s != P6) Trying converting with ImageMagick\n", header);
+		FILE *_im_tmp = fopen("/tmp/_im_webb_tmp", "w");
+		rewind(img_f);
+		while ((i = fgetc(img_f)) != EOF) {
+			fputc(i, _im_tmp);
+		}
+
+		fclose(_im_tmp);
+		if (!_imagemagick_convert_img_to_ppm("/tmp/_im_webb_tmp")) {
+			return load_ppm_image(fopen("res/not_ppm.ppm", "rb+"));
+		} else {
+			return load_ppm_image(fopen("/tmp/_im_webb_ppm.ppm", "rb+"));
+		}
 	}
 
 	while (Maxval == 0) {
