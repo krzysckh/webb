@@ -13,7 +13,7 @@ it supports http / https (specify in config.h)
 deps
 ====
 
-libcurl and libx11
+imagemagick, libcurl and libx11
 
 usage
 =====
