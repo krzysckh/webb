@@ -5,10 +5,13 @@
 
 int _imagemagick_convert_img_to_ppm(char *fname) {
 	int ret;
-	if (fork() == 0) {
-		ret = execl("/usr/bin/convert", "convert", fname, "/tmp/_im_webb_ppm.ppm", (char*) NULL);
-		printf("really tryuing ret = %d\n", ret);
-	}
+	char *com = malloc(sizeof(char) * (strlen("/usr/bin/convert /tmp/_im_webb_ppm.ppm ") + strlen(fname)) + 1);
+	sprintf(com, "/usr/bin/convert %s /tmp/_im_webb_ppm.ppm", fname);
+	ret = system(com);
+	free(com);
+	com = NULL;
+	/*ret = execl("/usr/bin/convert", "convert", fname, "/tmp/_im_webb_ppm.ppm", (char*) NULL);*/
+	/*printf("really tryuing ret = %d\n", ret);*/
 	return ret;
 }
 
@@ -72,7 +75,7 @@ Image load_ppm_image (FILE *img_f) {
 		}
 
 		fclose(_im_tmp);
-		if (!_imagemagick_convert_img_to_ppm("/tmp/_im_webb_tmp")) {
+		if (_imagemagick_convert_img_to_ppm("/tmp/_im_webb_tmp")) {
 			return load_ppm_image(fopen("res/not_ppm.ppm", "rb+"));
 		} else {
 			return load_ppm_image(fopen("/tmp/_im_webb_ppm.ppm", "rb+"));

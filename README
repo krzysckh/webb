@@ -1,9 +1,10 @@
-webb
-====
+it's mostly a playground for gfx library
 
-webb is an online upup document browser
+aand ppm image renderer and font renderer written with it
 
-it's absolutely unfinished and really, really bad
+
+https://www3.nd.edu/~dthain/courses/cse20211/fall2013/gfx/
+
 
 it supports most of upup syntax
 it can draw .ppm images
