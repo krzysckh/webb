@@ -91,6 +91,8 @@ char *searchbar(int X, int Y, int width, Font fnt, int padding, char *prompt, in
 
 	gfx_color(230, 230, 230);
 	draw_rect(X, Y, X + width + (padding * 2), Y + (padding * 2) + fnt.size);
+	gfx_color(50, 50, 50);
+	render_text(prompt, strlen(prompt), X, Y, fnt, 1, X + (fnt.size * strlen(prompt) * 2), 2*fnt.size, 0, 0, 0);
 
 	while ((c = gfx_wait()) != 13) {
 		if (c == 8 && i != 0) {

@@ -31,6 +31,5 @@ adding a font:
 	./webbfont /path/to/font.[ttf/otf] > _Font_Name.frfont
 	./webb -f fonts/_Font_Name.frfont
 
-
 [ krzysckh 2022 ]
 

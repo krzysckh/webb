@@ -19,6 +19,6 @@
 #define LINK_FG_COLOR_g 150
 #define LINK_FG_COLOR_b 255
 
-#define PROTOCOL "https://"
+#define PROTOCOL "http://"
 
 #endif
