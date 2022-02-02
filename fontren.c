@@ -69,7 +69,7 @@ Font load_font(FILE *f_file) {
 				j ++;
 			}
 
-			ret.defines = malloc(sizeof(char) * strlen(token));
+			ret.defines = malloc(sizeof(char) * (strlen(token) + 1));
 			strcpy(ret.defines, token);
 			ret.letter = malloc(sizeof(Letter) * strlen(ret.defines));
 		} else if (strcmp(token, "SIZE") == 0) {
