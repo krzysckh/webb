@@ -1,6 +1,8 @@
 #include "draw.h"
 #include "gfx.h"
 
+signed int img_br_ad = 0;
+
 int getOmmit(int a, int b) {
 	int i = 1;
 	while (1) {
@@ -28,7 +30,7 @@ void render_site(char *site, int size, Font fnt, int max_X, int max_Y, int base_
 
 	char *click_menu_opt[] = {"Exit webb", "Reload Page", "Load Website"};
 
-	int X = 0, Y = 0, i = 0, j, k;
+	int X = 0, Y = 0, i = 0, j, k, l;
 	int bold = 0, italic = 0, crossed = 0, header = 0;
 	int linkAlloc = 0, current_link = 0, link_buff_alloc_count;
 	char *img_link_buff;
@@ -92,6 +94,27 @@ void render_site(char *site, int size, Font fnt, int max_X, int max_Y, int base_
 				FILE *img_f = download_to_tmpf(img_link_buff);
 				rewind(img_f);
 				Image img_buff = load_ppm_image(img_f);
+
+				l = 0;
+				for (k = 0; k < img_buff.height; k++) {
+					for (j = 0; j < img_buff.width; j++) {
+						if (
+							img_buff.pixel[l].r + img_br_ad < 255 &&
+							img_buff.pixel[l].g + img_br_ad < 255 &&
+							img_buff.pixel[l].b + img_br_ad < 255
+						) {
+							img_buff.pixel[l].r += img_br_ad;
+							img_buff.pixel[l].g += img_br_ad;
+							img_buff.pixel[l].b += img_br_ad;
+						} else {
+							img_buff.pixel[l].r = 255;
+							img_buff.pixel[l].g = 255;
+							img_buff.pixel[l].b = 255;
+						}
+
+						l ++;
+					}
+				}
 
 				if (img_buff.height > max_Y - Y) {
 					render_image_smaller(img_buff, X, Y, getOmmit(img_buff.height, max_Y));
@@ -301,6 +324,14 @@ void render_site(char *site, int size, Font fnt, int max_X, int max_Y, int base_
 				break;
 			case 'q':
 				exit(0);
+				break;
+			case '=':
+				img_br_ad = (img_br_ad + 1 < 255) ? img_br_ad + 1 : img_br_ad;
+				printf("draw(): img_br_ad: %d\n", img_br_ad);
+				break;
+			case '-':
+				img_br_ad = (img_br_ad - 1 > -255) ? img_br_ad - 1 : img_br_ad;
+				printf("draw(): img_br_ad: %d\n", img_br_ad);
 				break;
 		}
 	}

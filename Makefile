@@ -1,4 +1,4 @@
-CFLAGS=-Wall -Wextra -std=c89 -I.
+CFLAGS=-Wall -Wextra -std=c89 -I. -ggdb -Ofast
 LDFLAGS=-lX11 -lm -lcurl
 
 all: fontren.o gfx.o download.o webb.o draw.o renderppm.o ui.o
@@ -7,3 +7,5 @@ all: fontren.o gfx.o download.o webb.o draw.o renderppm.o ui.o
 	$(CC) -c -o $@ $< $(CFLAGS) 
 clean:
 	rm -f webb *.o
+test: all
+	./webb -X 1920 -Y 1200 -s 2

@@ -111,11 +111,12 @@ char *searchbar(int X, int Y, int width, Font fnt, int padding, char *prompt, in
 
 		gfx_color(22,22,22);
 		render_text(ret, strlen(ret), X + padding, Y + padding, fnt, 1, width + X + (padding * 2), Y + (padding * 2) + (fnt.size * 1), 0, 0, 0);
-		printf("ret = %s\n", ret);
-		printf("c = %c (%d) \n", c, c);
+		/*printf("ret = %s\n", ret);*/
+		/*printf("c = %c (%d) \n", c, c);*/
 
 		i ++;
 	}
 
+	printf("searchbar(): returning %s\n", ret);
 	return ret;
 }

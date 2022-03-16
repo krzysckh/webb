@@ -15,4 +15,3 @@ typedef struct {
 } Link;
 
 void render_site(char *site, int size, Font fnt, int max_X, int max_Y, int base_fontsize);
-
